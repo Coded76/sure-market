@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { WalletService } from '@/server/services/WalletService'
 import { getUserIdFromRequest } from '@/lib/api-helpers'

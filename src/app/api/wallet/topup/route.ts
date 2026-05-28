@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { initiateTopUp } from '@/lib/sureverifications'
 import { getTokenFromRequest } from '@/lib/api-helpers'

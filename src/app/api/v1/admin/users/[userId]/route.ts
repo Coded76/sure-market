@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { handleError, ERROR_CODES } from '@/server/errors'
 import { logger } from '@/server/logger'

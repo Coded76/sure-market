@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { WalletService } from '@/server/services/WalletService'
 import { handleError, ERROR_CODES } from '@/server/errors'

@@ -1,7 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['api.sureverifications.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'api.sureverifications.com',
+      },
+    ],
   },
 }
 

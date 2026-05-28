@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { OrderService } from '@/server/services/OrderService'
 import { handleError, ERROR_CODES } from '@/server/errors'
