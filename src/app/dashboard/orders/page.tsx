@@ -117,8 +117,8 @@ export default function OrdersPage() {
                   </span>
                 </td>
                 <td style={{ padding: '13px 16px', fontSize: 13, color: 'var(--text2)' }}>{o.quantity}</td>
-                <td style={{ padding: '13px 16px', fontFamily: 'var(--font-jetbrains)', fontSize: 12, color: 'var(--text2)' }}>${o.unitPrice.toFixed(2)}</td>
-                <td style={{ padding: '13px 16px', fontFamily: 'var(--font-jetbrains)', fontSize: 13, fontWeight: 600 }}>${o.totalPrice.toFixed(2)}</td>
+                <td style={{ padding: '13px 16px', fontFamily: 'var(--font-jetbrains)', fontSize: 12, color: 'var(--text2)' }}>₦{o.unitPrice.toLocaleString('en-NG')}</td>
+                <td style={{ padding: '13px 16px', fontFamily: 'var(--font-jetbrains)', fontSize: 13, fontWeight: 600 }}>₦{o.totalPrice.toLocaleString('en-NG')}</td>
                 <td style={{ padding: '13px 16px' }}><StatusPill status={o.status} /></td>
                 <td style={{ padding: '13px 16px', fontSize: 12, color: 'var(--text2)', whiteSpace: 'nowrap' }}>
                   {new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}

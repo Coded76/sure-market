@@ -34,7 +34,7 @@ const transactionSchema = new Schema<ITransaction>(
       required: true,
     },
     amount: { type: Number, required: true },
-    currency: { type: String, default: 'USD' },
+    currency: { type: String, default: 'NGN' },
     status: {
       type: String,
       enum: ['pending', 'completed', 'failed', 'cancelled'],

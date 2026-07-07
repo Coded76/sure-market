@@ -78,7 +78,7 @@ export class UserService {
     await Wallet.create({
       userId: user._id,
       balance: 0,
-      currency: 'USD',
+      currency: 'NGN'
     })
 
     // Generate token

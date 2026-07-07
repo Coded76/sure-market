@@ -4,12 +4,12 @@ import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 const PRODUCTS = [
-  { icon: '📱', label: 'US Phone Numbers', desc: '646, 917, 310, 212 area codes', price: 'from $2.50', color: '#00d4ff' },
-  { icon: '📘', label: 'Facebook Accounts', desc: 'Aged, phone-verified profiles', price: 'from $9.00', color: '#1877f2' },
-  { icon: '📸', label: 'Instagram Accounts', desc: 'Email + phone verified', price: 'from $12.00', color: '#e1306c' },
-  { icon: '🐦', label: 'Twitter / X Accounts', desc: 'Phone verified, 1yr+ aged', price: 'from $7.00', color: '#1da1f2' },
-  { icon: '💬', label: 'WhatsApp Numbers', desc: 'US-registered, ready to use', price: 'from $5.00', color: '#25d366' },
-  { icon: '🎵', label: 'TikTok Accounts', desc: 'Email verified, blank profile', price: 'from $8.00', color: '#ee1d52' },
+  { icon: '📱', label: 'US Phone Numbers', desc: '646, 917, 310, 212 area codes', price: 'from ₦2,500', color: '#00d4ff' },
+  { icon: '📘', label: 'Facebook Accounts', desc: 'Aged, phone-verified profiles', price: 'from ₦9,000', color: '#1877f2' },
+  { icon: '📸', label: 'Instagram Accounts', desc: 'Email + phone verified', price: 'from ₦12,000', color: '#e1306c' },
+  { icon: '🐦', label: 'Twitter / X Accounts', desc: 'Phone verified, 1yr+ aged', price: 'from ₦7,000', color: '#1da1f2' },
+  { icon: '💬', label: 'WhatsApp Numbers', desc: 'US-registered, ready to use', price: 'from ₦5,000', color: '#25d366' },
+  { icon: '🎵', label: 'TikTok Accounts', desc: 'Email verified, blank profile', price: 'from ₦8,000', color: '#ee1d52' },
 ]
 
 const STATS = [

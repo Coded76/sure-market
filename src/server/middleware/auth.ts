@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { verifyToken } from '@/server/security'
 import { AppError, ERROR_CODES } from '@/server/errors'
 import User from '@/models/User'
 import { connectDB } from '@/lib/db'
+
+function getTokenFromRequest(request: NextRequest): string | null {
+  const authHeader = request.headers.get('authorization')
+  if (authHeader?.startsWith('Bearer ')) {
+    return authHeader.slice(7)
+  }
+  return cookies().get('sm_token')?.value ?? null
+}
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: {
@@ -17,12 +26,11 @@ export async function withAuth(
 ) {
   return async (request: NextRequest) => {
     try {
-      const authHeader = request.headers.get('authorization')
-      if (!authHeader?.startsWith('Bearer ')) {
+      const token = getTokenFromRequest(request)
+      if (!token) {
         throw new AppError(401, 'No authorization token provided', ERROR_CODES.UNAUTHORIZED)
       }
 
-      const token = authHeader.slice(7)
       const decoded = verifyToken(token)
       if (!decoded) {
         throw new AppError(401, 'Invalid or expired token', ERROR_CODES.TOKEN_EXPIRED)
@@ -64,12 +72,11 @@ export async function withAdminAuth(
 ) {
   return async (request: NextRequest) => {
     try {
-      const authHeader = request.headers.get('authorization')
-      if (!authHeader?.startsWith('Bearer ')) {
+      const token = getTokenFromRequest(request)
+      if (!token) {
         throw new AppError(401, 'No authorization token provided', ERROR_CODES.UNAUTHORIZED)
       }
 
-      const token = authHeader.slice(7)
       const decoded = verifyToken(token)
       if (!decoded) {
         throw new AppError(401, 'Invalid or expired token', ERROR_CODES.TOKEN_EXPIRED)

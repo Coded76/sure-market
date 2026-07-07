@@ -62,8 +62,8 @@ export default function DashboardHome() {
 
   const statCards = [
     { label: 'Total Orders', value: String(stats.totalOrders), sub: `+${stats.ordersThisMonth} this month`, color: 'var(--accent)' },
-    { label: 'Total Spent', value: `$${stats.totalSpent.toFixed(2)}`, sub: `+$${stats.spentThisMonth} this month`, color: 'var(--accent-green)' },
-    { label: 'Wallet Balance', value: `$${stats.walletBalance.toFixed(2)}`, sub: 'Available now' },
+    { label: 'Total Spent', value: `₦${stats.totalSpent.toLocaleString('en-NG')}`, sub: `+₦${stats.spentThisMonth.toLocaleString('en-NG')} this month`, color: 'var(--accent-green)' },
+    { label: 'Wallet Balance', value: `₦${stats.walletBalance.toLocaleString('en-NG')}`, sub: 'Available now' },
     { label: 'Accounts Owned', value: String(stats.accountsOwned), sub: 'Active accounts', color: '#a78bfa' },
   ]
 
@@ -99,7 +99,7 @@ export default function DashboardHome() {
                   </span>
                 </td>
                 <td style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text2)' }}>{o.quantity}</td>
-                <td style={{ padding: '12px 16px', fontFamily: 'var(--font-jetbrains)', fontSize: 13 }}>${o.totalPrice.toFixed(2)}</td>
+                <td style={{ padding: '12px 16px', fontFamily: 'var(--font-jetbrains)', fontSize: 13 }}>₦{o.totalPrice.toLocaleString('en-NG')}</td>
                 <td style={{ padding: '12px 16px' }}><StatusPill status={o.status} /></td>
                 <td style={{ padding: '12px 16px', fontSize: 12, color: 'var(--text2)' }}>{new Date(o.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</td>
                 <td style={{ padding: '12px 16px' }}>

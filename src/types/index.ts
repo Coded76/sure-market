@@ -5,6 +5,7 @@ export interface User {
   firstName: string
   lastName: string
   country: string
+  role: 'user' | 'admin'
   emailVerified: boolean
   twoFactorEnabled: boolean
   createdAt: string
@@ -84,6 +85,26 @@ export interface CreateOrderPayload {
 
 export interface OrdersResponse {
   orders: Order[]
+  total: number
+  page: number
+  pageSize: number
+}
+
+// ─── Accounts ─────────────────────────────────────────────────────────────────
+export interface Account {
+  id: string
+  platform: 'facebook'
+  emailOrPhone: string
+  password: string
+  twoFactorSecret?: string
+  price: number
+  status: 'available' | 'sold' | 'reserved'
+  description?: string
+  createdAt: string
+}
+
+export interface AccountsResponse {
+  accounts: Account[]
   total: number
   page: number
   pageSize: number

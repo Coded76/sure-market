@@ -13,6 +13,7 @@ function mapUser(u: any) {
     country: u.country || 'Nigeria',
     emailVerified: u.emailVerified,
     twoFactorEnabled: false,
+    role: u.role,
     createdAt: u.createdAt,
   }
 }

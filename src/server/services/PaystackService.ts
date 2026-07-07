@@ -46,6 +46,7 @@ export class PaystackService {
     email: string
     userId: string
     currency?: string
+    callbackUrl?: string
     metadata?: Record<string, any>
   }): Promise<{
     authorizationUrl: string
@@ -60,7 +61,8 @@ export class PaystackService {
         {
           amount: data.amount,
           email: data.email,
-          currency: data.currency || 'USD',
+          currency: data.currency || 'NGN',
+          callback_url: data.callbackUrl,
           metadata: {
             userId: data.userId,
             ...data.metadata,
@@ -230,7 +232,7 @@ export class PaystackService {
       userId,
       type: 'topup',
       amount,
-      currency: 'USD',
+      currency: 'NGN',
       status: 'failed',
       description: `Failed payment: ${reason || 'Unknown reason'}`,
       paymentGateway: 'paystack',

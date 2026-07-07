@@ -13,6 +13,9 @@ export class AppError extends Error {
 }
 
 export const ERROR_CODES = {
+  // Generic errors
+  NOT_FOUND: 'NOT_FOUND',
+
   // Auth errors
   INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
   EMAIL_ALREADY_EXISTS: 'EMAIL_ALREADY_EXISTS',

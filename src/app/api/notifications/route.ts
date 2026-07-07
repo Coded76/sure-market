@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
         id: `tx-${tx.id}`,
         type: 'wallet_credited',
         title: 'Wallet credited',
-        message: `$${tx.amount.toFixed(2)} was added to your wallet via ${tx.type}.`,
+        message: `₦${tx.amount.toLocaleString('en-NG')} was added to your wallet via ${tx.type}.`,
         read: false,
         createdAt: tx.createdAt,
       }))

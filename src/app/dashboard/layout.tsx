@@ -36,6 +36,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [balance, setBalance] = useState<number | null>(null)
   const [userName, setUserName] = useState('User')
   const [userEmail, setUserEmail] = useState('')
+  const [userRole, setUserRole] = useState('user')
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         const fullName = [user.firstName, user.lastName].filter(Boolean).join(' ').trim()
         setUserName(fullName || 'User')
         setUserEmail(user.email || '')
+        setUserRole(user.role || 'user')
       }
     }).catch(() => {})
   }, [])
@@ -122,6 +124,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             Support
           </a>
 
+          {userRole === 'admin' && (
+            <>
+              <div style={{ fontSize: 10, color: 'var(--text3)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 600, padding: '16px 8px 8px' }}>Admin</div>
+              <Link href="/dashboard/admin" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', margin: '1px 0', borderRadius: 9, color: pathname === '/dashboard/admin' ? 'var(--accent)' : 'var(--text2)', fontSize: 13, fontWeight: 500, textDecoration: 'none', background: pathname === '/dashboard/admin' ? 'linear-gradient(135deg,rgba(124,58,237,0.13),rgba(0,212,255,0.08))' : 'transparent', border: pathname === '/dashboard/admin' ? '1px solid rgba(124,58,237,0.15)' : '1px solid transparent', transition: 'all .15s' }}>
+                <span style={{ fontSize: 15, width: 18, textAlign: 'center' }}>🛡</span>
+                Admin Overview
+              </Link>
+              <Link href="/dashboard/admin/accounts" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', margin: '1px 0', borderRadius: 9, color: isActive('/dashboard/admin/accounts') ? 'var(--accent)' : 'var(--text2)', fontSize: 13, fontWeight: 500, textDecoration: 'none', background: isActive('/dashboard/admin/accounts') ? 'linear-gradient(135deg,rgba(124,58,237,0.13),rgba(0,212,255,0.08))' : 'transparent', border: isActive('/dashboard/admin/accounts') ? '1px solid rgba(124,58,237,0.15)' : '1px solid transparent', transition: 'all .15s' }}>
+                <span style={{ fontSize: 15, width: 18, textAlign: 'center' }}>📱</span>
+                Accounts
+              </Link>
+              <Link href="/dashboard/admin/orders" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', margin: '1px 0', borderRadius: 9, color: isActive('/dashboard/admin/orders') ? 'var(--accent)' : 'var(--text2)', fontSize: 13, fontWeight: 500, textDecoration: 'none', background: isActive('/dashboard/admin/orders') ? 'linear-gradient(135deg,rgba(124,58,237,0.13),rgba(0,212,255,0.08))' : 'transparent', border: isActive('/dashboard/admin/orders') ? '1px solid rgba(124,58,237,0.15)' : '1px solid transparent', transition: 'all .15s' }}>
+                <span style={{ fontSize: 15, width: 18, textAlign: 'center' }}>📦</span>
+                Orders
+              </Link>
+              <Link href="/dashboard/admin/users" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', margin: '1px 0', borderRadius: 9, color: isActive('/dashboard/admin/users') ? 'var(--accent)' : 'var(--text2)', fontSize: 13, fontWeight: 500, textDecoration: 'none', background: isActive('/dashboard/admin/users') ? 'linear-gradient(135deg,rgba(124,58,237,0.13),rgba(0,212,255,0.08))' : 'transparent', border: isActive('/dashboard/admin/users') ? '1px solid rgba(124,58,237,0.15)' : '1px solid transparent', transition: 'all .15s' }}>
+                <span style={{ fontSize: 15, width: 18, textAlign: 'center' }}>👥</span>
+                Users
+              </Link>
+            </>
+          )}
+
           <button onClick={handleSignOut} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 10px', margin: '1px 0', borderRadius: 9, color: 'var(--text3)', fontSize: 13, fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer', width: '100%', transition: 'color .15s' }}
             onMouseEnter={e => (e.currentTarget.style.color = 'var(--danger)')}
             onMouseLeave={e => (e.currentTarget.style.color = 'var(--text3)')}>
@@ -138,7 +162,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <small style={{ color: 'var(--text2)', fontSize: 11 }}>{maskEmail(userEmail) || 'No email'}</small>
           </div>
           {balance !== null && (
-            <span style={{ fontFamily: 'var(--font-jetbrains)', fontSize: 11, color: 'var(--accent-green)', fontWeight: 600, flexShrink: 0 }}>${balance.toFixed(2)}</span>
+            <span style={{ fontFamily: 'var(--font-jetbrains)', fontSize: 11, color: 'var(--accent-green)', fontWeight: 600, flexShrink: 0 }}>₦{balance.toLocaleString('en-NG')}</span>
           )}
         </div>
       </aside>
@@ -156,7 +180,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {balance !== null && (
               <Link href="/dashboard/wallet" style={{ background: 'var(--bg3)', border: '1px solid var(--border2)', borderRadius: 9, padding: '6px 14px', display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', cursor: 'pointer' }}>
                 <span style={{ fontSize: 12, color: 'var(--text2)' }}>Balance</span>
-                <strong style={{ fontFamily: 'var(--font-jetbrains)', color: 'var(--accent-green)', fontSize: 14 }}>${balance.toFixed(2)}</strong>
+                <strong style={{ fontFamily: 'var(--font-jetbrains)', color: 'var(--accent-green)', fontSize: 14 }}>₦{balance.toLocaleString('en-NG')}</strong>
               </Link>
             )}
             <NotificationsBell />

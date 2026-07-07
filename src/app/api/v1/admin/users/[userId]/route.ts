@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { handleError, ERROR_CODES } from '@/server/errors'
 import { logger } from '@/server/logger'
 import { verifyToken } from '@/server/security'
@@ -12,16 +13,21 @@ export async function POST(
   { params }: { params: { userId: string } }
 ) {
   try {
-    // Extract and verify token
+    // Accept token from Authorization header OR httpOnly cookie
     const authHeader = request.headers.get('authorization')
-    if (!authHeader?.startsWith('Bearer ')) {
+    let token: string | undefined
+    if (authHeader?.startsWith('Bearer ')) {
+      token = authHeader.slice(7)
+    } else {
+      token = cookies().get('sm_token')?.value
+    }
+    if (!token) {
       return NextResponse.json(
         { error: { message: 'No authorization token', code: ERROR_CODES.UNAUTHORIZED } },
         { status: 401 }
       )
     }
 
-    const token = authHeader.slice(7)
     const decoded = verifyToken(token)
     if (!decoded || decoded.role !== 'admin') {
       return NextResponse.json(

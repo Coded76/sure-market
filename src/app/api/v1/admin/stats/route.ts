@@ -1,28 +1,33 @@
 export const dynamic = 'force-dynamic'
 
 import { NextRequest, NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 import { handleError, ERROR_CODES } from '@/server/errors'
 import { logger } from '@/server/logger'
 import { verifyToken } from '@/server/security'
 import User from '@/models/User'
-import Order from '@/models/Order'
+import Account from '@/models/Account'
 import Transaction from '@/models/Transaction'
 import Wallet from '@/models/Wallet'
 import { connectDB } from '@/lib/db'
-import { SureVerificationsService } from '@/server/services/SureVerificationsService'
 
 export async function GET(request: NextRequest) {
   try {
-    // Extract and verify token
+    // Accept token from Authorization header OR httpOnly cookie
     const authHeader = request.headers.get('authorization')
-    if (!authHeader?.startsWith('Bearer ')) {
+    let token: string | undefined
+    if (authHeader?.startsWith('Bearer ')) {
+      token = authHeader.slice(7)
+    } else {
+      token = cookies().get('sm_token')?.value
+    }
+    if (!token) {
       return NextResponse.json(
         { error: { message: 'No authorization token', code: ERROR_CODES.UNAUTHORIZED } },
         { status: 401 }
       )
     }
 
-    const token = authHeader.slice(7)
     const decoded = verifyToken(token)
     if (!decoded || decoded.role !== 'admin') {
       return NextResponse.json(
@@ -37,9 +42,9 @@ export async function GET(request: NextRequest) {
     const totalUsers = await User.countDocuments()
     const activeUsers = await User.countDocuments({ status: 'active' })
     const suspendedUsers = await User.countDocuments({ status: 'suspended' })
-    const totalOrders = await Order.countDocuments()
-    const completedOrders = await Order.countDocuments({ status: 'completed' })
-    const failedOrders = await Order.countDocuments({ status: 'failed' })
+    const totalAccounts = await Account.countDocuments()
+    const availableAccounts = await Account.countDocuments({ status: 'available' })
+    const soldAccounts = await Account.countDocuments({ status: 'sold' })
 
     // Get revenue
     const transactions = await Transaction.aggregate([
@@ -54,26 +59,16 @@ export async function GET(request: NextRequest) {
     ])
     const totalWalletBalance = wallets[0]?.totalBalance || 0
 
-    // Get provider balance
-    let providerBalance = 0
-    try {
-      const balance = await SureVerificationsService.getBalance()
-      providerBalance = balance.balance
-    } catch {
-      // Provider unavailable, continue without balance
-    }
-
     // Get recent transactions
     const recentTransactions = await Transaction.find()
       .sort({ createdAt: -1 })
       .limit(10)
       .select('-metadata')
 
-    // Get recent orders
-    const recentOrders = await Order.find()
-      .sort({ createdAt: -1 })
+    // Get recent sold accounts
+    const recentOrders = await Account.find({ status: 'sold' })
+      .sort({ boughtAt: -1 })
       .limit(10)
-      .select('-errorLog')
 
     logger.info('Admin fetched dashboard stats', {
       adminId: decoded.userId,
@@ -86,22 +81,18 @@ export async function GET(request: NextRequest) {
           active: activeUsers,
           suspended: suspendedUsers,
         },
-        orders: {
-          total: totalOrders,
-          completed: completedOrders,
-          failed: failedOrders,
+        accounts: {
+          total: totalAccounts,
+          available: availableAccounts,
+          sold: soldAccounts,
         },
         revenue: {
           total: totalRevenue,
-          currency: 'USD',
+          currency: 'NGN',
         },
         wallet: {
           totalBalance: totalWalletBalance,
-          currency: 'USD',
-        },
-        provider: {
-          balance: providerBalance,
-          currency: 'USD',
+          currency: 'NGN',
         },
       },
       recentTransactions: recentTransactions.map((t) => ({
@@ -114,12 +105,11 @@ export async function GET(request: NextRequest) {
       })),
       recentOrders: recentOrders.map((o) => ({
         id: o._id,
-        userId: o.userId,
-        country: o.country,
-        service: o.service,
+        userId: o.boughtBy,
+        account: o.emailOrPhone,
         status: o.status,
         price: o.price,
-        createdAt: o.createdAt,
+        createdAt: o.boughtAt || o.createdAt,
       })),
     })
   } catch (error) {

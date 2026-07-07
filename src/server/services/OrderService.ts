@@ -31,7 +31,7 @@ export class OrderService {
       country: data.country,
       countryCode: data.countryCode,
       price: data.price,
-      currency: data.currency || 'USD',
+      currency: data.currency || 'NGN',
       status: 'pending',
       expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
       smsCheckCount: 0,

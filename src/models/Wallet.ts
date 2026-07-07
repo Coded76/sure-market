@@ -22,7 +22,7 @@ const walletSchema = new Schema<IWallet>(
       unique: true,
     },
     balance: { type: Number, default: 0, min: 0 },
-    currency: { type: String, default: 'USD' },
+    currency: { type: String, default: 'NGN' },
     totalDeposited: { type: Number, default: 0 },
     totalSpent: { type: Number, default: 0 },
     totalRefunded: { type: Number, default: 0 },
